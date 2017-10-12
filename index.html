@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+    <script src="rem.js"></script>
+</head>
+<style>
+    *{
+    	margin: 0;
+    	padding: 0;
+    	list-style: none;
+    	box-sizing: border-box;\
+    	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    	-webkit-text-size-adjust: none;
+    }
+	.win{
+		width: 100%;
+		height: 4rem;
+		position: relative;
+		overflow: hidden;
+	}
+	.imgBox{
+		width: 500%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.imgBox>li{
+		width: 7.5rem;
+		height: 100%;
+		float: left;
+	}
+	.imgBox>li>img{
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.btn{
+		width: 2rem;
+		height: 0.2rem;
+		position: absolute;
+		top: 80%;
+		left: 50%;
+		margin-left: -1rem;
+		display: flex;
+		justify-content: space-between;
+	}
+	.btn>li{
+		width: 0.2rem;
+		height: 0.2rem;
+		background: gray;
+		border-radius: 50%;
+	}
+</style>
+<body>
+	<div class="win">
+		<ul class="imgBox">
+			<li><img src="banner1.jpg" alt=""></li>
+			<li><img src="banner2.jpg" alt=""></li>
+			<li><img src="banner3.jpg" alt=""></li>
+			<li><img src="banner5.jpg" alt=""></li>
+			<li><img src="banner6.jpg" alt=""></li>
+		</ul>
+		<ul class="btn">
+			<li style="background: #fff;"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<script>
+		window.addEventListener('load', function(){
+			let imgBox=document.querySelector('ul.imgBox');
+			let lis=document.querySelectorAll('.win>.btn>li');
+			let startx,cx,num;
+			let imgw=window.innerWidth;
+			imgBox.innerHTML+=imgBox.innerHTML;
+			let len=imgBox.childElementCount;
+			imgBox.style.width=`${imgw*len}px`;
+            imgBox.addEventListener('touchstart', function(e){
+			    console.log(lis)
+            	let event=e.changedTouches[0];
+                cx=event.pageX;
+                this.style.transition='none';
+                num=this.offsetLeft/imgw;               
+                if(num==0){
+                	num=-5;
+                }
+                if(num==1-len){
+                	num=-4;
+                }
+                imgBox.style.left=`${num*imgw}px`;
+                startx=this.offsetLeft;
+                                 
+            })
+            
+            imgBox.addEventListener('touchmove', function(e){
+            	let event=e.changedTouches[0];
+            	let mx=event.pageX;
+            	let lefts=startx+mx-cx;
+            	imgBox.style.left=`${lefts}px`;
+            	this.style.transition='none';
+            })
+            imgBox.addEventListener('touchend', function(e){
+                let lefts=this.offsetLeft;
+                let num=Math.round(lefts/imgw);
+                this.style.transition='all 0.5s';
+                this.style.left=`${num*imgw}px`;
+                let quyu=Math.abs(num%5);
+                lis.forEach(element=>{
+                	element.style.background='gray';
+                })
+                lis[quyu].style.background='#fff';
+            })
+		})
+	</script>
+</body>
+</html>
